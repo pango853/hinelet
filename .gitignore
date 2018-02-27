@@ -1,0 +1,16 @@
+Thumbs.db
+*~
+*.bak
+*.BAK
+
+*.class
+*.jar
+
+.classpath
+.project
+.settings/
+tmp/
+target/
+
+/src/main/ws/
+
