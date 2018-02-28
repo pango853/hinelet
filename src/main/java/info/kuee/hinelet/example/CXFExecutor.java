@@ -9,7 +9,10 @@ import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
 import com.clustercontrol.ws.access.ManagerInfo;
 
 /**
- * Set the following environment variables before running this program
+ * Using CXF
+ * 
+ * In this example we are going to CXF.
+ * First, set the following environment variables before running this program.
  * 
  * 	SET HINEMOS_MANGER_URL=http://xxx.xxx.xxx.xxx:8080/HinemosWS/
  * 	SET HINEMOS_USER=hinemos

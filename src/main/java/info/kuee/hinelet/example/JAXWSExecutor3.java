@@ -35,19 +35,19 @@ import org.xml.sax.helpers.DefaultHandler;
  * @see REF: <a href="https://www.zaneli.com/blog/20111228">ザネリは列車を見送った's 
  *      SOAP Webサービスクライアントを作ろう(JAX-WS, Apache CXF 編)</a>
  */
-public class JAXWSExecutor {
+public class JAXWSExecutor3 {
 
-	private static final String WSDL_URI = System.getenv("HINEMOS_MANGER_URL")+"AccessEndpoint?wsdl";
+	private static final String WSDL_URI = System.getenv("HINEMOS_MANGER_URL")+"RepositoryEndpoint?wsdl";
 	private static final String HINEMOS_USER = System.getenv("HINEMOS_USER");
 	private static final String HINEMOS_PASS = System.getenv("HINEMOS_PASS");
 
-	private static final String NAMESPACE = "http://access.ws.clustercontrol.com";
-	private static final QName SERVICE_NAME = new QName(NAMESPACE, "AccessEndpointService");
-	private static final QName PORT_NAME = new QName(NAMESPACE, "AccessEndpointPort");
-	private static final String OPERATION_NAME = "checkLogin";
+	private static final String NAMESPACE = "http://repository.ws.clustercontrol.com";
+	private static final QName SERVICE_NAME = new QName(NAMESPACE, "RepositoryEndpointService");
+	private static final QName PORT_NAME = new QName(NAMESPACE, "RepositoryEndpointPort");
+	private static final String OPERATION_NAME = "getPlatformList";
 	private static final String RESPONSE_BODY_NAME = OPERATION_NAME + "Response";
 
-	public String checkLogin() throws ParserConfigurationException, SAXException, IOException,
+	public String getPlatformList() throws ParserConfigurationException, SAXException, IOException,
 			XMLStreamException, FactoryConfigurationError, TransformerException {
 		URL wsdlURL = new URL(WSDL_URI);
 		Service service = Service.create(wsdlURL, SERVICE_NAME);
@@ -75,8 +75,7 @@ public class JAXWSExecutor {
 	private SAXSource createRequestSource() throws IOException {
 		InputStream in = null;
 		try {
-			String reqBody = "<checkLogin xmlns=\"" + NAMESPACE + "\"></checkLogin>";
-			//String reqBody = "<ns2:checkLogin xmlns:ns2=\"" + NAMESPACE + "\"></ns2:checkLogin>";
+			String reqBody = "<getPlatformList xmlns=\"" + NAMESPACE + "\"></getPlatformList>";
 			in = new ByteArrayInputStream(reqBody.getBytes("UTF-8"));
 			return new SAXSource(new InputSource(in));
 		} finally {
@@ -85,7 +84,6 @@ public class JAXWSExecutor {
 		}
 	}
 
-	// TODO FIXME response shows up as null!
 	private static class ResponseHandler extends DefaultHandler {
 		private boolean isGetMessageResultStarted;
 		private String response;
@@ -94,21 +92,10 @@ public class JAXWSExecutor {
 		public void startElement(String uri, String localName, String qName, Attributes attributes)
 				throws SAXException {
 			isGetMessageResultStarted = NAMESPACE.equals(uri) && RESPONSE_BODY_NAME.equals(localName);
-			System.out.println("startElement()");
-		    System.out.println("\tnamespace=" + uri);
-		    System.out.println("\tlocal name=" + localName);
-		    System.out.println("\tqualified name=" + qName);
-		    for (int i = 0; i < attributes.getLength(); i++) {
-			    System.out.println("\tattribute name=" + attributes.getLocalName(i));
-			    System.out.println("\tattribute qualified name=" + attributes.getQName(i));
-			    System.out.println("\tattribute value=" + attributes.getValue(i));
-			}
 		}
 
 		@Override
 		public void characters(char[] ch, int start, int length) throws SAXException {
-			System.out.println(ch);
-			System.out.println("characters = " + new String(ch, start, length)); // DEBUG
 			if (isGetMessageResultStarted) {
 				response = new String(ch, start, length);
 			}
@@ -120,6 +107,6 @@ public class JAXWSExecutor {
 	}
 
 	public static void main(String[] args) throws Exception {
-		System.out.println(new JAXWSExecutor().checkLogin());
+		System.out.println(new JAXWSExecutor3().getPlatformList());
 	}
 }
