@@ -28,7 +28,12 @@
 			<artifactId>org.restlet.ext.simple</artifactId>
 			<version>${restlet.version}</version>
 		</dependency>
-		<!--  -->
+		<dependency>
+			<groupId>org.restlet.jse</groupId>
+			<artifactId>org.restlet.ext.crypto</artifactId>
+			<version>${restlet.version}</version>
+		</dependency>
+		<!-- SOAP -->
 		<dependency>
 			<groupId>info.hinemos</groupId>
 			<artifactId>ClientWS</artifactId>
@@ -55,14 +60,14 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<sourceDirectory>src/main/java,src/main/ws</sourceDirectory>
+		<!-- sourceDirectory>src/main/java</sourceDirectory -->
 		<plugins>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
 				<version>1.6.0</version>
 				<configuration>
-					<mainClass>info.kuee.hinelet.example.HelloResource</mainClass>
+					<mainClass>info.kuee.hinelet.MainServer</mainClass>
 				</configuration>
 			</plugin>
 			<plugin>
